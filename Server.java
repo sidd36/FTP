@@ -10,7 +10,7 @@ class ftpserver extends Thread
 	BufferedWriter bufwrite;
 	Scanner s=new Scanner(System.in);
 	Socket sc;
-	
+
 	ftpserver(Socket sock) 
 	{
 		{
@@ -28,11 +28,10 @@ class ftpserver extends Thread
 			}
 		}
 	}	
+
 	void receive() throws Exception
 	{
-		System.out.println("Enter the name of the file required");
-		String name=bufread.readLine();
-		out.writeUTF(name);
+		String name=in.readUTF();
 		String msg=in.readUTF();
 		if(msg.compareTo("Requested file does not exist")==0)
 			System.out.println("Requested file does not exist");
@@ -58,9 +57,12 @@ class ftpserver extends Thread
 			}
 		}
 	}
+
 	void send() throws Exception
 	{
-		String name=in.readUTF();
+		System.out.println("Enter the name of the file to be sent");
+		String name=bufread.readLine();
+		out.writeUTF(name);
 		File f=new File(name);
 		if(!f.exists())
 		{
@@ -84,7 +86,7 @@ class ftpserver extends Thread
 			out.close();
 		}
 	}
-	
+
 	void chat() throws IOException
 	{
 		Boolean con;
@@ -107,7 +109,7 @@ class ftpserver extends Thread
 			}
 		}
 	}
-	
+
 	public void run() 
 	{
 		while(true)
@@ -145,6 +147,7 @@ class ftpserver extends Thread
 		}
 	}
 }
+
 class Server 
 {
 	public static void main(String args[]) throws IOException
@@ -156,4 +159,4 @@ class Server
 			ftpserver obj=new ftpserver(sock.accept());
 		}
 	}
-}	
+}

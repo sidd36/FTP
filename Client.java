@@ -12,7 +12,7 @@ class ftpclient
 	BufferedOutputStream bufout;
 	Scanner s=new Scanner(System.in); 
 	Socket sc;
-	
+
 	ftpclient(Socket sock) throws Exception
 	{
 		{
@@ -29,7 +29,7 @@ class ftpclient
 			}
 		}
 	}
-	
+
 	void menu() throws Exception
 	{
 		System.out.println("1:Send");
@@ -59,7 +59,9 @@ class ftpclient
 	
 	void send() throws Exception
 	{
-		String name=in.readUTF();
+		System.out.println("Enter the name of the file to be sent");
+		String name=bufread.readLine();
+		out.writeUTF(name);
 		File f=new File(name);
 		if(!f.exists())
 		{
@@ -86,9 +88,7 @@ class ftpclient
 
 	void receive() throws Exception
 	{
-		System.out.println("Enter the name of the file required");
-		String name=bufread.readLine();
-		out.writeUTF(name);
+		String name=in.readUTF();
 		String msg=in.readUTF();
 		if(msg.compareTo("Requested file does not exist")==0)
 			System.out.println("Requested file does not exist");
@@ -150,4 +150,4 @@ class Client
 			obj.menu();	
 		}
 	}
-}	
+}
