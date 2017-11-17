@@ -7,7 +7,7 @@ class Server
 	public static void main(String args[]) throws IOException
 	{
 		System.out.println("Server has started");
-		ServerSocket sock=new ServerSocket(6003);
+		ServerSocket sock=new ServerSocket(6005);
 		while(true)
 		{	
 			Ftpserver obj=new Ftpserver(sock.accept());

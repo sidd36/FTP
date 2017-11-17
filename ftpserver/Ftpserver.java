@@ -3,14 +3,15 @@ package ftpserver;
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
-import serverchat.*;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 
 public class Ftpserver extends Thread
 {
 	protected DataOutputStream out;
 	protected DataInputStream in;
 	protected BufferedReader bufread;
-	BufferedWriter bufwrite;
 	Scanner s=new Scanner(System.in);
 	Socket sc;
 
@@ -80,8 +81,20 @@ public class Ftpserver extends Thread
 		else
 		{
 			out.writeUTF("Sending file");
-			System.out.println("Sending file");;
-			FileInputStream fi=new FileInputStream(f);
+			System.out.println("Sending file");
+			String key = "xyz0123qwertyabc";
+			File inputFile = f;
+			File encryptedFile = new File("file.encrypted");
+			try 
+			{
+				Serverencdec.encdec(Cipher.ENCRYPT_MODE,key,inputFile,encryptedFile);
+				System.out.println("Successfully encrypted the file");
+			}
+			catch (Exception ex) 
+			{
+			   ex.printStackTrace();
+			}
+			FileInputStream fi=new FileInputStream(/*f*/encryptedFile);
 			int data;
 			do
 			{
@@ -94,8 +107,6 @@ public class Ftpserver extends Thread
 			out.close();
 		}
 	}
-	
-	
 
 	public void run() 
 	{
@@ -121,16 +132,9 @@ public class Ftpserver extends Thread
 						System.out.println("Server closed");
 						System.exit(0);
 					}
-					else if(cmd.compareTo("Chat")==0)
-					{
-						Serverchat obj=new Serverchat(sc);
-						//obj.schat();
-						continue;
-					}
 				}	
 				catch(Exception ex)
-				{
-				}
+				{}
 			}
 		}
 	}
